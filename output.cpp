@@ -15,13 +15,4 @@ int print_str(int fd, strsize *arr, size_t strcnt)
 
 	return NO_ERR;
 }
-#if 0
-int clearBuffer(char **arr, size_t strcnt)
-{
-	if (arr == NULL)
-		return ERRNUM = BUFF_PTR_ERR;
-	for (int i = 0; i != strcnt; i++)
-		free(arr[i]);
-	return NO_ERR;
-}
-#endif
+
