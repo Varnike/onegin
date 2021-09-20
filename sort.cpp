@@ -30,7 +30,7 @@ void swap(char *v, int i, void j)
 	v[j] = temp;
 }
 #endif
-int cmp_reverse(const void *str1, const void *str2) 
+int cmp_from_back(const void *str1, const void *str2) 
 {
 	const strsize *s1 = (const strsize *)str1;
 	const strsize *s2 = (const strsize *)str2;
@@ -38,9 +38,7 @@ int cmp_reverse(const void *str1, const void *str2)
 	//printf("Compairing two strings: \"%s\" and \"%s\".\n", s1->strptr, s2->strptr);
 
 	int pos1 = s1->len - 1;
-	int pos2 = s2->len - 1;
-
-	//printf("%d, %d\n", pos1, pos2); 
+	int pos2 = s2->len - 1; 
 
 	while(!isalpha(s1->strptr[pos1]) && !isdigit(s1->strptr[pos1]) && pos1 >= 0) {
 		pos1--;
@@ -51,8 +49,8 @@ int cmp_reverse(const void *str1, const void *str2)
 	}
 	
 	while (pos1 >= 0 && pos2 >= 0) {
-		if (s1->strptr[pos1--] - s2->strptr[pos2--] != 0) 	
-			return (s1->strptr[pos1 + 1] - s2->strptr[pos2 + 1]);
+		if (tolower(s1->strptr[pos1--]) - tolower(s2->strptr[pos2--]) != 0) 	
+			return (tolower(s1->strptr[pos1 + 1]) - tolower(s2->strptr[pos2 + 1]));
 	}
 
 	if (pos1 + pos2 == 0)
@@ -61,19 +59,15 @@ int cmp_reverse(const void *str1, const void *str2)
 	return (pos1 == 0) ? -1 : 1;
 }
 
-int strcomp(const void *str1, const void *str2)
+int cmp_from_start(const void *str1, const void *str2)
 { 
-#if 0
-	//printf("Compairing two strings: %s and %s.\n", s1->ptr, s2->ptr);
 	const strsize *s1 = (const strsize *)str1;
         const strsize *s2 = (const strsize *)str2;
 
 	int it = 0;
-	for (;s1->strptr[it] - s2->strptr[it++] == 0; it++)
+	for (;tolower(s1->strptr[it]) - tolower(s2->strptr[it]) == 0; it++)
 		if (s1->strptr[it] == '\n')
 			return 0;
-	return s1->strptr[it] - s2->strptr[it];
-#endif
-	//if (str1[it] == '\n')
-	return strcmp(((const strsize *)str1)->strptr, ((const strsize *)str2)->strptr);
+
+	return tolower(s1->strptr[it]) - tolower(s2->strptr[it]) ;
 }

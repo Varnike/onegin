@@ -8,7 +8,7 @@ int print_str(strsize *arr, size_t strcnt)
 	for (size_t i = 0; i != strcnt; i++) {
 		if (arr == NULL)
 		       return errnum = POINTER_ERR;
-		if (printf("%s\n", arr[i].realptr) < 0)
+		if (write(OUTPUT_MODE, arr[i].strptr, arr[i].len + 1) != arr[i].len + 1)
 			return errnum = OUTPUT_ERR;	
 	}
 
@@ -23,3 +23,12 @@ int clearBuffer(char **arr, size_t strcnt)
 		free(arr[i]);
 	return NO_ERR;
 }
+#if 0
+int printstr(strsize *str)
+{
+	int cnt = 0;
+	if (write(STDIN_OUTPUT, str->strptr, str->len + 1) != str->len + 1)
+		return EOF;
+	return cnt;
+}
+#endif

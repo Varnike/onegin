@@ -11,6 +11,6 @@
 //TODO void myqsort(void *v, int left, int right, int (*comp)(void *,void *));
 //void swap(char *v, int i, int j);
 //int cmpstr(const void *str1, const void *str2);
-int cmp_reverse(const void *str1, const void *str2);
-int strcomp(const void *str1, const void *str2);
+int cmp_from_back(const void *str1, const void *str2);
+int cmp_from_start(const void *str1, const void *str2);
 #endif //SORT_H
