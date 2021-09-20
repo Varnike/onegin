@@ -1,40 +1,79 @@
 #include <iostream>
 #include <stdlib.h>
-
-
+#include <unistd.h>
+#include <fcntl.h>
 #include "output.h"
 #include "input.h"
 #include "error.h"
-#include "config.h"
 #include "sort.h"
 
+const char *fin_name = "textin.txt";
+const char *fout_name = "sorted.txt";
 
 int main() 
 {
-	FILE *input = fopen("lust.txt", "r");
-	if(input == NULL) 
+	int fd       = 0;
+	int fd_out   = 0;
+	int linecnt  = 0;
+	int buffsize = 0;
+	char *buff   = NULL;
+	strsize *str = NULL;
+
+	if ((buffsize = getFileSize(fin_name)) == EOF) {
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+                return -1;
+	}
+
+	if((fd = open(fin_name, O_RDONLY, 0)) == -1 || (fd_out = open(fout_name, O_WRONLY, 0)) == -1)
+                return -1;
+
+	if ((buff = (char  *) calloc(sizeof(char),  buffsize + 1)) == NULL) {
+		ERRNUM = CALLOC_ERR;
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
 		return -1;
+	}
 
-	char *buff = 0;
+	if ((linecnt =  readNcnt(fd, buff, buffsize)) == EOF) {
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+		free(buff);
+		return -1;
+	}
 
-	int buffsize = getFileSize(input);
-	buff   = (char  *) calloc(sizeof(char),  buffsize + 1);
+	if ((str = (strsize *) calloc(sizeof(strsize), linecnt)) == NULL) {
+		ERRNUM = CALLOC_ERR;
+                fprintf(stderr, "%s\n", errmsg(ERRNUM));
+		free(buff);
+                return -1;
+	}
 
-	int linecnt =  readNcnt(input, buff, buffsize);
+	if (read_in_str(str, buff, linecnt, buffsize) != linecnt) {
+                fprintf(stderr, "%s\n", errmsg(ERRNUM));
+		free(buff);
+        	free(str);
+                return -1;	
+	}	
 
-	strsize *str= (strsize *) calloc(sizeof(strsize), linecnt);
+	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_start));
+	if (print_str(fd_out, str, linecnt) != NO_ERR)
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
 
-	read_in_str(str, buff, linecnt, buffsize);	
-		
-	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_start)); 
-		
-	printf("\n\n\n======= errcode %d =======\n\n\n", print_str(str, linecnt));
 	
 	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_back));
-	printf("\n\n\n======= errcode %d =======\n\n\n", print_str(str, linecnt));
+       	if (print_str(fd_out, str, linecnt) != NO_ERR)
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+
+
+	if (write(fd_out, buff, buffsize) != buffsize) {
+		ERRNUM = WRITE_ERR;
+		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+	}
 	
-	printf("%s\n", buff);
-	fclose(input);
+
+	if (close(fd) == EOF) {
+		ERRNUM = CLOSEF_ERR;
+                fprintf(stderr, "%s\n", errmsg(ERRNUM));
+	}
+
 	free(buff);
 	free(str);
 

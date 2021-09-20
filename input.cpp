@@ -1,25 +1,32 @@
 #include "input.h"
 
-int readNcnt(FILE *file, char *buff, size_t buffsize)
+int readNcnt(int fd, char *buff, size_t buffsize)
 {
-	//TODO ferror = 0;
-	int fd = fileno(file);
-	//printf("%d\n", fd);
-	read(fd, buff, buffsize);	
-	printf("BUFFSIZE = %zu\n", buffsize);
-	//TODO
-	if (file == NULL) {
-		errnum = FILE_PTR_ERR;
-		return EOF;
+	if(read(fd, buff, buffsize) != buffsize) {
+		ERRNUM = READ_ERR;
+		return -1;
 	}
-	
+
+	printf("BUFFSIZE = %zu\n", buffsize);
+	//write(1, buff, buffsize);	
+
 	int nlines = count_lines(buff, buffsize); 
+
 	printf("NLINES = %d\n", nlines);
 	return nlines;
 }
 
 int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
-	// TODO
+	if (str == NULL) {
+		ERRNUM = STRUCT_PTR_ERR;
+		return EOF;
+	}
+
+	if (buff == NULL) {
+		ERRNUM = BUFF_PTR_ERR;
+		return EOF;
+	}
+
 	int curr_ptr  = 0;
 	int curr_line = 0;
 	int prev_cnt  = 0;
@@ -41,30 +48,30 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 			str[curr_line++].len = i - curr_ptr; 
 			
 			curr_ptr = i + 1;
-			
-			write(1, str[curr_line -1].strptr, str[curr_line -1].len + 1);
 		}
 	}	
-
-	write(1, "\n\n",2);
 	return nlines;
 }
 
 
-int getFileSize(FILE *file)
+int getFileSize(const char *filename)
 {
-	if (file == NULL)
+	struct stat statbuf = {};
+
+	if (stat(filename, &statbuf) == -1)
+   	{
+		ERRNUM = FILE_SIZE_ERR;
 		return EOF;
+    	}
 
-	fseek(file, 0, SEEK_END);
-	size_t fsize = ftell(file);
-	fseek(file, 0, SEEK_SET);
-
-	return fsize;	
+    	//printf("BUFFSIZE = %zu\n", statbuf.st_size);
+	return statbuf.st_size;
 }
 
 int count_lines(char *str, const size_t len)
 {
+	if (str == NULL)
+		return EOF;
 	int cnt = 0;
 	int charcnt = 0;
 

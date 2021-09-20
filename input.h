@@ -4,6 +4,7 @@
 #include "error.h"
 #include "config.h"
 
+#include <sys/stat.h>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -17,9 +18,9 @@ struct strsize {
 	int len;
 };
 
-int readNcnt(FILE *file, char *buff, size_t buffsize);
+int readNcnt(int fd, char *buff, size_t buffsize);
 int count_lines(char *str, const size_t len);
-int getFileSize(int fd *file);
+int getFileSize(const char *name);
 int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize);
 
 #endif // INPUT_H

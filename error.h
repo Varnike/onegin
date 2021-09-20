@@ -1,16 +1,19 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-extern int errnum;
+extern int ERRNUM;
 
 enum errtype {
-	NO_ERR	     = 0,
-	POINTER_ERR  = 1,
-	MALLOC_ERR   = 2,
-	MAXLINES_ERR = 3,
-	MAXLEN_ERR   = 4,
-	READ_ERR     = 5,
-	OUTPUT_ERR   = 6,
-	FILE_PTR_ERR = 7
+	NO_ERR	       = 0,
+	UNKNOWN_ERR    = 1,
+	CALLOC_ERR     = 2,
+	READ_ERR       = 3,
+	WRITE_ERR      = 4,
+	STRUCT_PTR_ERR = 5,
+	BUFF_PTR_ERR   = 6,
+	FILE_SIZE_ERR  = 7,
+	CLOSEF_ERR     = 8
 };
+
+const char *errmsg(int errt);
 #endif //ERROR_H
