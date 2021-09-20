@@ -24,8 +24,11 @@ int main()
                 return -1;
 	}
 
-	if((fd = open(fin_name, O_RDONLY, 0)) == -1 || (fd_out = open(fout_name, O_WRONLY, 0)) == -1)
-                return -1;
+	if((fd = open(fin_name, O_RDONLY, 0)) == -1 || (fd_out = open(fout_name, O_WRONLY, 0)) == -1) {
+         	ERRNUM = FOPEN_ERR;
+                fprintf(stderr, "%s\n", errmsg(ERRNUM));
+	 	return -1;
+	}
 
 	if ((buff = (char  *) calloc(sizeof(char),  buffsize + 1)) == NULL) {
 		ERRNUM = CALLOC_ERR;
@@ -52,8 +55,9 @@ int main()
         	free(str);
                 return -1;	
 	}	
-
-	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_start));
+	
+	myqsort(str, 0, linecnt - 1, (int (*)(const void *, const void *))(cmp_from_start));
+	//qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_start));
 	if (print_str(fd_out, str, linecnt) != NO_ERR)
 		fprintf(stderr, "%s\n", errmsg(ERRNUM));
 
@@ -70,7 +74,7 @@ int main()
 	
 
 	if (close(fd) == EOF) {
-		ERRNUM = CLOSEF_ERR;
+		ERRNUM = FCLOSE_ERR;
                 fprintf(stderr, "%s\n", errmsg(ERRNUM));
 	}
 

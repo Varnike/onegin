@@ -3,6 +3,8 @@
 
 extern int ERRNUM;
 
+const int ERRS_CNT = 9;
+
 enum errtype {
 	NO_ERR	       = 0,
 	UNKNOWN_ERR    = 1,
@@ -12,7 +14,8 @@ enum errtype {
 	STRUCT_PTR_ERR = 5,
 	BUFF_PTR_ERR   = 6,
 	FILE_SIZE_ERR  = 7,
-	CLOSEF_ERR     = 8
+	FCLOSE_ERR     = 8,
+	FOPEN_ERR      = 9
 };
 
 const char *errmsg(int errt);

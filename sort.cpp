@@ -1,6 +1,6 @@
 #include "sort.h"
-#if 0
-void myqsort(void *v, int left, int right, int (*comp)(void *, void *))
+
+void myqsort(strsize *v, int left, int right, int (*comp)(const void *, const void *))
 {
 	assert(v);
 
@@ -9,33 +9,31 @@ void myqsort(void *v, int left, int right, int (*comp)(void *, void *))
 	if (left >= right) 
 		return; 
 	
-	swap(v, left, (left+ right)/2);
+	swap(v, left, (left+ right) / 2);
 	
 	last = left;
 
-	for (i = left+1; i <= right; i++)
-		if (comp(v[i], v[left]) < 0)
+	for (i = left + 1; i <= right; i++) {
+		if (comp(&v[i], &v[left]) < 0)
 			swap(v, ++last, i);
+	}
 
 	swap(v, left, last);
-	qsort(v, left, last-1, comp);
-	qsort(v, last+1, right, comp);
+	myqsort(v, left, last-1, comp);
+	myqsort(v, last+1, right, comp);
 }
 
-void swap(char *v, int i, void j)
+void swap(strsize *v, int i, int j)
 {
-	const void *temp = NULL;
-	temp = v[i];
+	strsize temp =  v[i];
 	v[i] = v[j];
 	v[j] = temp;
 }
-#endif
+
 int cmp_from_back(const void *str1, const void *str2) 
 {
 	const strsize *s1 = (const strsize *)str1;
 	const strsize *s2 = (const strsize *)str2;
-
-	//printf("Compairing two strings: \"%s\" and \"%s\".\n", s1->strptr, s2->strptr);
 
 	int pos1 = s1->len - 1;
 	int pos2 = s2->len - 1; 

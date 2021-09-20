@@ -10,7 +10,7 @@ int print_str(int fd, strsize *arr, size_t strcnt)
 			return ERRNUM = WRITE_ERR;	
 	}
 
-	if (write(fd, "\n\n\n", 3) != 3)
+	if (write(fd, "\n\n\n", NEWLINE_CNT) != NEWLINE_CNT)
                         return ERRNUM = WRITE_ERR;
 
 	return NO_ERR;

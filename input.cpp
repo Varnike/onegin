@@ -7,8 +7,7 @@ int readNcnt(int fd, char *buff, size_t buffsize)
 		return -1;
 	}
 
-	printf("BUFFSIZE = %zu\n", buffsize);
-	//write(1, buff, buffsize);	
+	printf("BUFFSIZE = %zu\n", buffsize);	
 
 	int nlines = count_lines(buff, buffsize); 
 
@@ -64,7 +63,6 @@ int getFileSize(const char *filename)
 		return EOF;
     	}
 
-    	//printf("BUFFSIZE = %zu\n", statbuf.st_size);
 	return statbuf.st_size;
 }
 

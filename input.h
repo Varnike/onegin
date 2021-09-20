@@ -2,7 +2,6 @@
 #define INPUT_H
 
 #include "error.h"
-#include "config.h"
 
 #include <sys/stat.h>
 #include <cstring>
