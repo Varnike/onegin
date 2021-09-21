@@ -38,9 +38,8 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 			}
 
 			str[curr_line].realptr = (char*)(buff + curr_ptr);
-
-			while(!isalpha(buff[curr_ptr]) && !isdigit(buff[curr_ptr]) &&
-				       	buff[curr_ptr] != '\0')
+			
+			while(isTrash(buff[curr_ptr]) && buff[curr_ptr] != '\n')
 				curr_ptr++;
 
 			str[curr_line].strptr = (char*)(buff + curr_ptr);
@@ -48,10 +47,15 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 			
 			curr_ptr = i + 1;
 		}
-	}	
+	}
+	
 	return nlines;
 }
 
+int isTrash(char c)
+{
+	return !isalpha(c) && !isdigit(c);
+}
 
 int getFileSize(const char *filename)
 {

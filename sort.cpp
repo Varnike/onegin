@@ -38,11 +38,11 @@ int cmp_from_back(const void *str1, const void *str2)
 	int pos1 = s1->len - 1;
 	int pos2 = s2->len - 1; 
 
-	while(!isalpha(s1->strptr[pos1]) && !isdigit(s1->strptr[pos1]) && pos1 >= 0) {
+	while(isTrash(s1->strptr[pos1]) && pos1 >= 0) {
 		pos1--;
 	}
 
-	while(!isalpha(s2->strptr[pos2]) && !isdigit(s2->strptr[pos2]) && pos2 >= 0) {
+	while(s2->strptr[pos2] && pos2 >= 0) {
 		pos2--;
 	}
 	
