@@ -7,10 +7,12 @@
 #include <ctype.h>
 
 #include "input.h"
+#include "output.h"
 
-//TODO void myqsort(void *v, int left, int right, int (*comp)(void *,void *));
-//void swap(char *v, int i, int j);
-//int cmpstr(const void *str1, const void *str2);
+void myqsort(strsize *arr, int left, int right, int (*comp)(const void *,const void *));
+void swap(strsize *val1, strsize *val2);
 int cmp_from_back(const void *str1, const void *str2);
 int cmp_from_start(const void *str1, const void *str2);
+void sortNwrite(char *buff, strsize *str, int fd_out, int buffsize, int linecnt);
 #endif //SORT_H
+

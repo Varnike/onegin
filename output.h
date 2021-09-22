@@ -7,6 +7,7 @@
 #if 0
 int clearBuffer(char **mass, size_t strcnt);
 #endif
+const size_t NEWLINE_CNT = 3;
 
 int print_str(int fd,strsize *str, size_t strcnt);
 

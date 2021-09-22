@@ -6,73 +6,44 @@
 #include "input.h"
 #include "error.h"
 #include "sort.h"
-
-const char *fin_name = "textin.txt";
-const char *fout_name = "sorted.txt";
+#include "file.h"
 
 int main() 
 {
 	int fd       = 0;
-	int fd_out   = 0;
-	int linecnt  = 0;
-	int buffsize = 0;
-	char *buff   = NULL;
-	strsize *str = NULL;
+        int fd_out   = 0;
+	open_files(&fd, &fd_out);
 
-	if ((buffsize = getFileSize(fin_name)) == EOF) {
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
-                return -1;
-	}
+	int buffsize = filein_size();
 
-	if((fd = open(fin_name, O_RDONLY, 0)) == -1 || (fd_out = open(fout_name, O_WRONLY, 0)) == -1)
-                return -1;
-
-	if ((buff = (char  *) calloc(sizeof(char),  buffsize + 1)) == NULL) {
+	char *buff = (char  *) calloc(sizeof(char),  buffsize + 1);
+	if (buff == NULL) {
 		ERRNUM = CALLOC_ERR;
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
-		return -1;
+		exit_err(fd, fd_out);
 	}
 
-	if ((linecnt =  readNcnt(fd, buff, buffsize)) == EOF) {
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+	int linecnt =  readNcnt(fd, buff, buffsize);
+	if (linecnt == EOF) {
 		free(buff);
-		return -1;
+		exit_err(fd, fd_out);
 	}
 
-	if ((str = (strsize *) calloc(sizeof(strsize), linecnt)) == NULL) {
+	strsize *str = (strsize *) calloc(sizeof(strsize), linecnt);
+	if (str == NULL) {
 		ERRNUM = CALLOC_ERR;
-                fprintf(stderr, "%s\n", errmsg(ERRNUM));
-		free(buff);
-                return -1;
+      		free(buff);
+		exit_err(fd, fd_out);
 	}
 
 	if (read_in_str(str, buff, linecnt, buffsize) != linecnt) {
-                fprintf(stderr, "%s\n", errmsg(ERRNUM));
 		free(buff);
         	free(str);
-                return -1;	
-	}	
-
-	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_start));
-	if (print_str(fd_out, str, linecnt) != NO_ERR)
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
-
-	
-	qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_back));
-       	if (print_str(fd_out, str, linecnt) != NO_ERR)
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
-
-
-	if (write(fd_out, buff, buffsize) != buffsize) {
-		ERRNUM = WRITE_ERR;
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
+		exit_err(fd, fd_out);
 	}
-	
 
-	if (close(fd) == EOF) {
-		ERRNUM = CLOSEF_ERR;
-                fprintf(stderr, "%s\n", errmsg(ERRNUM));
-	}
+	sortNwrite(buff, str, fd_out, buffsize, linecnt);
+
+	close_files(fd, fd_out);
 
 	free(buff);
 	free(str);

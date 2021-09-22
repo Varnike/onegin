@@ -7,8 +7,7 @@ int readNcnt(int fd, char *buff, size_t buffsize)
 		return -1;
 	}
 
-	printf("BUFFSIZE = %zu\n", buffsize);
-	//write(1, buff, buffsize);	
+	printf("BUFFSIZE = %zu\n", buffsize);	
 
 	int nlines = count_lines(buff, buffsize); 
 
@@ -39,9 +38,8 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 			}
 
 			str[curr_line].realptr = (char*)(buff + curr_ptr);
-
-			while(!isalpha(buff[curr_ptr]) && !isdigit(buff[curr_ptr]) &&
-				       	buff[curr_ptr] != '\0')
+			
+			while(isTrash(buff[curr_ptr]) && buff[curr_ptr] != '\n')
 				curr_ptr++;
 
 			str[curr_line].strptr = (char*)(buff + curr_ptr);
@@ -49,11 +47,16 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 			
 			curr_ptr = i + 1;
 		}
-	}	
+	}
+	
 	return nlines;
 }
 
-
+int isTrash(char c)
+{
+	return !isalpha(c) && !isdigit(c);
+}
+/*
 int getFileSize(const char *filename)
 {
 	struct stat statbuf = {};
@@ -64,27 +67,22 @@ int getFileSize(const char *filename)
 		return EOF;
     	}
 
-    	//printf("BUFFSIZE = %zu\n", statbuf.st_size);
 	return statbuf.st_size;
 }
-
+*/
 int count_lines(char *str, const size_t len)
 {
 	if (str == NULL)
 		return EOF;
 	int cnt = 0;
-	int charcnt = 0;
+	int i = 0;
+	for (i = 0; i != len; i++)
+		if (str[i] != '\n')
+			break;
 
-	for (int i = 0; i != len; i++) {
-		if (str[i] == '\n') {
-			if (charcnt == 0) 
-				continue;
-			charcnt = 0;
+	for ( ; i != len; i++) {
+		if (str[i] == '\n' && str[i-1] != '\n')
 			cnt++;
-		}
-		else 
-			charcnt++;
 	}
-
 	return cnt;
 }

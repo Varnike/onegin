@@ -13,9 +13,10 @@ const char *errmsg(int errt)
 		"Structure pointer error!",
 		"Buffer error!",
 		"An error occured while trying to get file size!",
-		"An error occured while closing file file"
+		"An error occured while closing file!",
+		"An error occured while opening file!"
         };
-        if (errt >= 0 && errt <= 8)
+        if (errt >= 0 && errt <= ERRS_CNT)
                 return messages[errt];
 
 
