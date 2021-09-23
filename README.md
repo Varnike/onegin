@@ -1,5 +1,5 @@
 # Onegin
-Sorts text in input file and print it in ouput file.
+Sorts text from input file and print it in ouput file.
 
 ## Compilation
 After downloading files run:
