@@ -1,23 +1,26 @@
 #include "file.h"
 
-void open_files(int *fd, int *fd_out)
+int open_file(const char *filename, int mode)
 {
-	*fd = open(FIN_NAME, O_RDONLY, 0);
-	*fd_out = open(FOUT_NAME, O_WRONLY, 0);
+	int fd = open(filename, mode, 0);
 
-        if (*fd == -1 || *fd_out == -1) {
+        if (fd == -1) {
 		ERRNUM = FOPEN_ERR;
-		fprintf(stderr, "%s\n", errmsg(ERRNUM));
-		exit(1);
+		perror(errmsg(ERRNUM));
+		return -1;
         }
+
+	return fd;
 }
 
-void close_files(int fd, int fd_out)
+int close_file(const int fd)
 {
-	if (close(fd) == EOF || close(fd_out) == EOF) {
+	if (close(fd) == EOF) {
                 ERRNUM = FCLOSE_ERR;
-                fprintf(stderr, "%s\n", errmsg(ERRNUM));
+                perror(errmsg(ERRNUM));
+		return -1;
         }
+	return 0;
 }
 
 int getFileSize(const char *filename)
@@ -27,26 +30,10 @@ int getFileSize(const char *filename)
         if (stat(filename, &statbuf) == -1)
         {
                 ERRNUM = FILE_SIZE_ERR;
+		perror(errmsg(ERRNUM));
                 return EOF;
         }
 
         return statbuf.st_size;
 }
 
-int filein_size() 
-{
-	int buffsize = getFileSize(FIN_NAME);
-	if (buffsize == EOF) {
-                fprintf(stderr, "%s\n", errmsg(ERRNUM));
-                exit(1);
-        }
-	return buffsize;
-}
-
-void exit_err(int fd, int fd_out)
-{
-	fprintf(stderr, "%s\n", errmsg(ERRNUM)); 
-	close_files(fd, fd_out);
-
-        exit(1);
-}

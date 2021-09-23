@@ -20,12 +20,29 @@
 #include "error.h"
 #include "input.h"
 
-const char FIN_NAME[]  = "textin.txt";
-const char FOUT_NAME[] = "sorted.txt";
+/**
+ * @brief Opens file.
+ *
+ * If any error is occured, prints error in strerr.
+ *
+ * @param filename Name name of the file.
+ * @param mode Open mode.
+ *
+ * @return File descriptor on success, overwise returns -1.
+ */
+int open_file(const char *filename, int mode);
 
-void open_files(int *fd_in, int *fd_out);
-void close_files(int fd_in, int fd_out);
-int filein_size();
+/**
+ * @brief Close file with given descriptor.
+ *
+ * If any error is occured, prints error in strerr.
+ *
+ * @param fd File descriptor.
+ *
+ * @return 0 on success, overwise returns -1.
+ */
+int close_file(const int fd);
+
 /**
  * @brief returns file size(number of characters in file).
  * 
@@ -36,6 +53,5 @@ int filein_size();
  */
 
 int getFileSize(const char *name);
-void exit_err(int fd, int fd_out);
 
 #endif
