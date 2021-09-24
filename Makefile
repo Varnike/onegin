@@ -6,7 +6,7 @@ OBJ = main.o input.o error.o output.o sort.o file.o onegin.o
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-test: $(OBJ)
+main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 clean :
 	rm *.o
