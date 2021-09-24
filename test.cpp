@@ -3,13 +3,14 @@
 #include "file.h"
 #include "onegin.h"
 
-const char *FIN_NAME  = "textin.txt";
-const char *FOUT_NAME = "sorted.txt";
+
 
 int main() 
 {
-	const int fd     = open_file(FIN_NAME, O_RDONLY);
-        const int fd_out = open_file(FOUT_NAME, O_WRONLY);
+	const char *fin_name  = "textin.txt";
+	const char *fout_name = "sorted.txt";
+	const int fd     = open_file(fin_name, O_RDONLY);
+        const int fd_out = open_file(fout_name, O_WRONLY);
 
 	if (fd == -1 || fd_out == -1)
 		return -1;
