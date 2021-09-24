@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
 
 	close_file(file_in);
 	close_file(file_out);
-
-	return pr_state;
+	
+	if(pr_state < 0)
+		pr_state;
+	return 0;
 }
