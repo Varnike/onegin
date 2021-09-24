@@ -56,20 +56,7 @@ int isTrash(char c)
 {
 	return !isalpha(c) && !isdigit(c);
 }
-/*
-int getFileSize(const char *filename)
-{
-	struct stat statbuf = {};
 
-	if (stat(filename, &statbuf) == -1)
-   	{
-		ERRNUM = FILE_SIZE_ERR;
-		return EOF;
-    	}
-
-	return statbuf.st_size;
-}
-*/
 int count_lines(char *str, const size_t len)
 {
 	if (str == NULL)
