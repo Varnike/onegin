@@ -1,33 +1,55 @@
 #include "sort.h"
 
-void myqsort(strsize *arr, int left, int right, int (*comp)(const void *, const void *))
+void myqsort(void *arr, size_t ssize, int left, int right, int (*comp)(const void *, const void *))
 {
-	assert(arr);
+        assert(arr);
 
-	int i = 0, last = 0;
+        int i = 0, last = 0;
 
-	if (left >= right) 
-		return; 
+        if (left >= right)
+                return;
 	
-	swap(arr + left, arr + (left+ right) / 2);
-	
-	last = left;
-
-	for (i = left + 1; i <= right; i++) {
-		if (comp(&arr[i], &arr[left]) < 0)
-			swap(arr + (++last), arr + i);
-	}
-
-	swap(arr + left, arr + last);
-	myqsort(arr, left, last-1, comp);
-	myqsort(arr, last+1, right, comp);
+        swap(((char *)arr + (left * ssize)), ((char *)arr + ((left + right) / 2 * ssize)), ssize);    
+        last = left;
+        for (i = left + 1; i <= right; i++) {
+                if (comp((char *)arr + i * ssize, (char *)arr + left * ssize) < 0)
+                        swap(((char *)arr + (++last * ssize)), (void *)((char *)arr + i * ssize), ssize);
+        } 
+        swap((void *)((char *)arr + (left * ssize)), (void *)((char *)arr + right * ssize), ssize);
+        myqsort(arr, ssize, left, last-1, comp);
+        myqsort(arr, ssize, last+1, right, comp);
 }
 
-void swap(strsize *val1, strsize *val2)
+void swap(void *dst, void *src, size_t len)
 {
-	strsize temp = *val1;
-	*val1 = *val2;
-	*val2 = temp;
+
+
+        for (int i = 0; len >= 8; i++) {
+                int64_t cstr = *((int64_t *)src + i);
+                *((int64_t *)src + i) = *((int64_t *)dst + i);
+                *((int64_t *)dst + i) = cstr;
+                len -= 8;
+        }
+
+        if (len >= 4) {
+                int32_t cstr = *((int32_t *)src);
+                *((int32_t *)src) = *((int32_t *)dst);
+                *((int32_t *)dst) = cstr;
+                len -= 4;
+        }
+
+        if (len >= 2) {
+                int16_t cstr = *((int16_t *)src);
+                *((int16_t *)src) = *((int16_t *)dst);
+                *((int16_t *)dst) = cstr;
+                len -= 2;
+        }
+
+        if (len >= 1) {
+                char cstr = *((char *)src);
+                *((char *)src) = *((char *)dst);
+                *((char *)dst) = cstr;
+        }
 }
 
 int cmp_from_back(const void *str1, const void *str2) 
@@ -72,7 +94,7 @@ int cmp_from_start(const void *str1, const void *str2)
 
 void sortNwrite(char *buff, strsize *str, FILE *file_out, int buffsize, int linecnt)
 {
-	myqsort(str, 0, linecnt - 1, (int (*)(const void *, const void *))(cmp_from_start));
+	myqsort((void *)str, sizeof(strsize), 0, linecnt - 1, (int (*)(const void *, const void *))(cmp_from_start));
         if (print_str(file_out, str, linecnt) != NO_ERR)
                 fprintf(stderr, "%s\n", errmsg(ERRNUM));
 

@@ -15,6 +15,8 @@ int print_str(FILE *file, strsize *arr, size_t strcnt)
 	}
 
 	fprintf(file,"\n\n\n");
+	if(fwrite("\n\n\n", sizeof(char), NEWLINE_CNT, file) != NEWLINE_CNT)
+		return ERRNUM = WRITE_ERR;
          
 	return NO_ERR;
 }

@@ -4,7 +4,7 @@
 #include "onegin.h"
 
 int main(int argc, char *argv[]) 
-{
+{	
 	if (argc != 3) {
 		fprintf(stderr,"Wrong amount of parameters\n"
 			"Usage: %s [input fille name] [output file name]\n", argv[0]);
@@ -24,8 +24,6 @@ int main(int argc, char *argv[])
 
 	close_file(file_in);
 	close_file(file_out);
-	
-	if(pr_state < 0)
-		pr_state;
-	return 0;
+
+	return pr_state;
 }
