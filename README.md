@@ -14,5 +14,8 @@ To start programm, type in console:
 ```
 ####
 
-## Example of use
-Programm reads input text from "textin.txt" file and sorts first from the beginning of the line, then from the end of the line. After that programm prints both sorted texts and original text in "sorted.txt" file.
+## Usage
+```sg
+./test [input fille name] [output file name]
+```
+Programm reads input text from input text file and sorts first from the beginning of the line, then from the end of the line. After that programm prints both sorted texts and original text in output file.
