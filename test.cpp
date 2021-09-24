@@ -1,7 +1,5 @@
 #include <iostream>
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include "file.h"
 #include "onegin.h"
 
