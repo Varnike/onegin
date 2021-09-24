@@ -1,28 +1,29 @@
-#include <stdio.h>
-#include <algorithm.h>
+#include <iostream>
+#include <stdlib.h>
+#include "file.h"
+#include "onegin.h"
 
-int cmpstr(const void *str1, const void *str2);
-int cmpstr_rvrs(const void *str1, const void* str2);
-int read_str(char **mass);
-void print_str(char **mass, size_t strcnt);
-void swap(void *v[], int, int);
-void sort_str((void ** str), (int (*)(void*, void*)) (cmpstr))
-
-//const int MAXLINES = 5000;
-
-int main() {
-	char *str[MAXLINES] = {0};
-	int nlines = 0;
-	if ((nlines = read_str(str)) == EOF) {
-		;//TODO err
+int main(int argc, char *argv[]) 
+{	
+	if (argc != 3) {
+		fprintf(stderr,"Wrong amount of parameters\n"
+			"Usage: %s [input fille name] [output file name]\n", argv[0]);
+		return 1;
 	}
-	const char **main = str;
-	qsort((void **) str, 0, nlines - 1, (int (*)(void*, void*)) (cmpstr));
-	print_str(str, nlines);
+	
+	const char *FIN_NAME  = argv[1];
+	const char *FOUT_NAME =	argv[2];
 
-	qsort((void **) str, 0, nlines - 1, (int (*)(void*, void*)) (cmpstr_rvrs));
-        print_str(str, nlines);
+	FILE* file_in   = open_file(FIN_NAME, "r");
+        FILE* file_out  = open_file(FOUT_NAME, "w");
 
-	print_str(main, nlines);
+	if (file_in == NULL || file_out == NULL)
+		return -1;
 
+	int pr_state = onegin(file_in, file_out);
+
+	close_file(file_in);
+	close_file(file_out);
+
+	return pr_state;
 }

@@ -4,10 +4,11 @@
 #include "error.h"
 #include "input.h"
 
-#include <cstdlib>
-#include <stdio.h>
-
+#if 0
 int clearBuffer(char **mass, size_t strcnt);
-int print_str(strsize *mass, size_t strcnt);
+#endif
+const size_t NEWLINE_CNT = 3;
+
+int print_str(FILE* fd,strsize *str, size_t strcnt);
 
 #endif //OUTPUT_H

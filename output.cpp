@@ -1,25 +1,22 @@
 #include "output.h"
 
-int print_str(strsize *arr, size_t strcnt)
+int print_str(FILE *file, strsize *arr, size_t strcnt)
 {
+	static int cnt = 0;
+	static char BUFFOUT[BUFSIZ] = {};
+
 	if (arr == NULL)
-		return errnum = POINTER_ERR;
+		return ERRNUM = BUFF_PTR_ERR;
 
 	for (size_t i = 0; i != strcnt; i++) {
-		if (arr == NULL)
-		       return errnum = POINTER_ERR;
-		if (printf("%s\n", arr[i].realptr) < 0)
-			return errnum = OUTPUT_ERR;	
+		int linestr = (arr[i].strptr - arr[i].realptr) + arr[i].len + 1;
+		if(fwrite(arr[i].realptr, sizeof(char), linestr, file) != linestr)
+			return ERRNUM = WRITE_ERR;	
 	}
 
-	return NO_ERR;
-}
-
-int clearBuffer(char **arr, size_t strcnt)
-{
-	if (arr == NULL)
-		return errnum = POINTER_ERR;
-	for (int i = 0; i != strcnt; i++)
-		free(arr[i]);
+	fprintf(file,"\n\n\n");
+	if(fwrite("\n\n\n", sizeof(char), NEWLINE_CNT, file) != NEWLINE_CNT)
+		return ERRNUM = WRITE_ERR;
+         
 	return NO_ERR;
 }
