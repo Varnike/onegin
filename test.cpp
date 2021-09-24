@@ -5,8 +5,8 @@
 #include "file.h"
 #include "onegin.h"
 
-const char FIN_NAME[]  = "textin.txt";
-const char FOUT_NAME[] = "sorted.txt";
+const char *FIN_NAME  = "textin.txt";
+const char *FOUT_NAME = "sorted.txt";
 
 int main() 
 {
