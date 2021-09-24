@@ -5,8 +5,6 @@
 
 int main(int argc, char *argv[]) 
 {
-	int c = 0;
-	
 	if (argc != 3) {
 		fprintf(stderr,"Wrong amount of parameters\n"
 			"Usage: %s [input fille name] [output file name]\n", argv[0]);
