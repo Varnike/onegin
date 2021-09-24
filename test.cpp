@@ -20,6 +20,7 @@ int main()
 
 	close_file(fd);
 	close_file(fd_out);
-
-	return pr_state;
+	if (pr_state < 0)
+		return 1;
+	return 0;
 }
