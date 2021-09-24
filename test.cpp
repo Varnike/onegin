@@ -3,23 +3,29 @@
 #include "file.h"
 #include "onegin.h"
 
-
-
-int main() 
+int main(int argc, char *argv[]) 
 {
-	const char *fin_name  = "textin.txt";
-	const char *fout_name = "sorted.txt";
-	const int fd     = open_file(fin_name, O_RDONLY);
-        const int fd_out = open_file(fout_name, O_WRONLY);
+	int c = 0;
+	
+	if (argc != 3) {
+		fprintf(stderr,"Wrong amount of parameters\n"
+			"Usage: %s [input fille name] [output file name]\n", argv[0]);
+		return 1;
+	}
+	
+	const char *FIN_NAME  = argv[1];
+	const char *FOUT_NAME =	argv[2];
 
-	if (fd == -1 || fd_out == -1)
+	FILE* file_in   = open_file(FIN_NAME, "r");
+        FILE* file_out  = open_file(FOUT_NAME, "w");
+
+	if (file_in == NULL || file_out == NULL)
 		return -1;
 
-	int pr_state = onegin(fd, fd_out);
+	int pr_state = onegin(file_in, file_out);
 
-	close_file(fd);
-	close_file(fd_out);
-	if (pr_state < 0)
-		return 1;
-	return 0;
+	close_file(file_in);
+	close_file(file_out);
+
+	return pr_state;
 }

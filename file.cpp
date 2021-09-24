@@ -1,21 +1,21 @@
 #include "file.h"
 
-int open_file(const char *filename, int mode)
+FILE* open_file(const char *filename, const char *mode)
 {
-	int fd = open(filename, mode, 0);
+	FILE *file = fopen(filename, mode);	
 
-        if (fd == -1) {
+        if (file == NULL) {
 		ERRNUM = FOPEN_ERR;
 		perror(errmsg(ERRNUM));
-		return -1;
+		return NULL;
         }
 
-	return fd;
+	return file;
 }
 
-int close_file(const int fd)
+int close_file(FILE *file)
 {
-	if (close(fd) == EOF) {
+	if (fclose(file) == EOF) {
                 ERRNUM = FCLOSE_ERR;
                 perror(errmsg(ERRNUM));
 		return -1;

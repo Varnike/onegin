@@ -70,19 +70,19 @@ int cmp_from_start(const void *str1, const void *str2)
 	return tolower(s1->strptr[it]) - tolower(s2->strptr[it]) ;
 }
 
-void sortNwrite(char *buff, strsize *str, int fd_out, int buffsize, int linecnt)
+void sortNwrite(char *buff, strsize *str, FILE *file_out, int buffsize, int linecnt)
 {
 	myqsort(str, 0, linecnt - 1, (int (*)(const void *, const void *))(cmp_from_start));
-        if (print_str(fd_out, str, linecnt) != NO_ERR)
+        if (print_str(file_out, str, linecnt) != NO_ERR)
                 fprintf(stderr, "%s\n", errmsg(ERRNUM));
 
 
         qsort(str, linecnt, sizeof(strsize), (int (*)(const void *, const void *))(cmp_from_back));
-        if (print_str(fd_out, str, linecnt) != NO_ERR)
+        if (print_str(file_out, str, linecnt) != NO_ERR)
                 fprintf(stderr, "%s\n", errmsg(ERRNUM));
 
 
-        if (write(fd_out, buff, buffsize) != buffsize) {
+        if (fwrite(buff, sizeof(char), buffsize, file_out) != buffsize) {
                 ERRNUM = WRITE_ERR;
                 fprintf(stderr, "%s\n", errmsg(ERRNUM));
         }

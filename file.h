@@ -28,20 +28,20 @@
  * @param filename Name name of the file.
  * @param mode Open mode.
  *
- * @return File descriptor on success, overwise returns -1.
+ * @return FILE* structure on success, overwise returns NULL.
  */
-int open_file(const char *filename, int mode);
+FILE* open_file(const char *filename, const char *mode);
 
 /**
  * @brief Close file with given descriptor.
  *
  * If any error is occured, prints error in strerr.
  *
- * @param fd File descriptor.
+ * @param fd FILE* structure.
  *
  * @return 0 on success, overwise returns -1.
  */
-int close_file(const int fd);
+int close_file(FILE *file);
 
 /**
  * @brief returns file size(number of characters in file).

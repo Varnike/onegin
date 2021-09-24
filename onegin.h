@@ -6,6 +6,6 @@
 #include "sort.h"
 #include "file.h"
 
-int onegin(const int fd, const int fd_out);
+int onegin(FILE* file_in, FILE* file_out);
 
 #endif

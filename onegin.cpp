@@ -1,6 +1,6 @@
 #include "onegin.h"
 
-int onegin(const int fd, const int fd_out)
+int onegin(FILE* file_in, FILE* file_out)
 {
 	int buffsize = getFileSize("textin.txt");                                                    
         if (buffsize == EOF)                                                                         
@@ -13,7 +13,7 @@ int onegin(const int fd, const int fd_out)
 		return -1;		
         }                                                                                            
                                                                                                      
-        int linecnt =  readNcnt(fd, buff, buffsize);                                                 
+        int linecnt =  readNcnt(fileno(file_in), buff, buffsize);                                                 
         if (linecnt == EOF) {                                                                        
                 free(buff);                                                                          
                 perror(errmsg(ERRNUM));
@@ -35,7 +35,7 @@ int onegin(const int fd, const int fd_out)
 		return -1;
         }
 
-        sortNwrite(buff, str, fd_out, buffsize, linecnt);
+        sortNwrite(buff, str, file_out, buffsize, linecnt);
 
 	free(buff);
 	free(str);

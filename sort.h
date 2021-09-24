@@ -13,6 +13,6 @@ void myqsort(strsize *arr, int left, int right, int (*comp)(const void *,const v
 void swap(strsize *val1, strsize *val2);
 int cmp_from_back(const void *str1, const void *str2);
 int cmp_from_start(const void *str1, const void *str2);
-void sortNwrite(char *buff, strsize *str, int fd_out, int buffsize, int linecnt);
+void sortNwrite(char *buff, strsize *str, FILE *file_out, int buffsize, int linecnt);
 #endif //SORT_H
 
