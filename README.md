@@ -10,6 +10,6 @@ make
 
 ## Usage
 ```sg
-./test [input fille name] [output file name]
+./main [input fille name] [output file name]
 ```
 Programm reads input text from input text file and sorts first from the beginning of the line, then from the end of the line. After that programm prints both sorted texts and original text in output file.
