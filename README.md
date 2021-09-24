@@ -7,12 +7,6 @@ After downloading files run:
 cd onegin/
 make
 ```
-## Run
-To start programm, type in console:
-```sh
-./test
-```
-####
 
 ## Usage
 ```sg
