@@ -6,6 +6,6 @@
 #include "sort.h"
 #include "file.h"
 
-int onegin(FILE* file_in, FILE* file_out);
-
+int sort_onegin(const char *fname_in, const char *fname_out);
+int read_from_file(textBuff *btext, const char *name_in);
 #endif

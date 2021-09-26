@@ -1,27 +1,28 @@
 #include "input.h"
 
-int readNcnt(int fd, char *buff, size_t buffsize)
+int readNcnt(textBuff *btext)
 {
-	if(read(fd, buff, buffsize) != buffsize) {
+	int fd = fileno(btext->file_in);
+	if(read(fd, btext->buff, btext->buffsize) != btext->buffsize) {
 		ERRNUM = READ_ERR;
 		return -1;
 	}
 
-	printf("BUFFSIZE = %zu\n", buffsize);	
+	printf("BUFFSIZE = %zu\n", btext->buffsize);	
 
-	int nlines = count_lines(buff, buffsize); 
+	btext->linecnt = count_lines(btext->buff, btext->buffsize); 
 
-	printf("NLINES = %d\n", nlines);
-	return nlines;
+	printf("NLINES = %d\n", btext->linecnt);
+	return btext->linecnt;
 }
 
-int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
-	if (str == NULL) {
+int read_in_str(textBuff *btext) {
+	if (btext->str == NULL) {
 		ERRNUM = STRUCT_PTR_ERR;
 		return EOF;
 	}
 
-	if (buff == NULL) {
+	if (btext->buff == NULL) {
 		ERRNUM = BUFF_PTR_ERR;
 		return EOF;
 	}
@@ -30,26 +31,26 @@ int read_in_str(strsize *str, const char *buff, int nlines, size_t buffsize) {
 	int curr_line = 0;
 	int prev_cnt  = 0;
 
-	for (int i = 0; curr_line < nlines && i != buffsize; i++) {
-		if (buff[i] == '\n') {
-			if (buff[curr_ptr] == '\n') {
+	for (int i = 0; curr_line < btext->linecnt && i != btext->buffsize; i++) {
+		if (btext->buff[i] == '\n') {
+			if (btext->buff[curr_ptr] == '\n') {
 				curr_ptr = i + 1;
 				continue;
 			}
 
-			str[curr_line].realptr = (char*)(buff + curr_ptr);
+			btext->str[curr_line].realptr = (char*)(btext->buff + curr_ptr);
 			
-			while(isTrash(buff[curr_ptr]) && buff[curr_ptr] != '\n')
+			while(isTrash(btext->buff[curr_ptr]) && btext->buff[curr_ptr] != '\n')
 				curr_ptr++;
 
-			str[curr_line].strptr = (char*)(buff + curr_ptr);
-			str[curr_line++].len = i - curr_ptr; 
+			btext->str[curr_line].strptr = (char*)(btext->buff + curr_ptr);
+			btext->str[curr_line++].len = i - curr_ptr; 
 			
 			curr_ptr = i + 1;
 		}
 	}
-	
-	return nlines;
+
+	return btext->linecnt;
 }
 
 int isTrash(char c)
